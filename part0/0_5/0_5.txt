@@ -1,0 +1,11 @@
+title Exercise 0.5 -- Single Page App
+Browser->Server: GET  /notes
+Server-->Browser: HTML Code
+Browser->Server: GET /main.css
+Server-->Browser: CSS Code
+Browser->Server: GET /spa.js
+Server-->Browser: Javascript Code
+note left of Browser: Browser executes JS Code
+Browser->Server: GET /data.json
+Server-->Browser: JSON data returned
+note left of Browser: Browser adds list of JSON data (notes) to html document
