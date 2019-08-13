@@ -14,8 +14,8 @@ const Content = (props) => {
     )
   }
 const Total = (props) => {
-    var sum=0;
-    for(var i=0;i<props.exercise_counts.length;i++){
+    let sum=0;
+    for(let i=0;i<props.exercise_counts.length;i++){
         sum+=props.exercise_counts[i];
     }
     return  (<p>Number of exercises {sum}</p>)
