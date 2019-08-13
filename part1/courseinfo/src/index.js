@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom'
 import { sign } from 'crypto';
 
 const Header = (props) => (<h1>{props.course}</h1>)
-const Content = (props) => (<p>{props.part_title} {props.exercise_count}</p>)
+const Part = (props) => (<p>{props.part_title} {props.exercise_count}</p>)
+const Content = (props) => {
+    return (
+        <>
+        <Part part_title={props.part_titles[0]} exercise_count={props.exercise_counts[0]} />
+        <Part part_title={props.part_titles[1]} exercise_count={props.exercise_counts[1]} />
+        <Part part_title={props.part_titles[2]} exercise_count={props.exercise_counts[2]} />
+        </>
+    )
+  }
 const Total = (props) => {
     var sum=0;
-    for(var i=0;i<props.exercise_counts.length();i++){
+    for(var i=0;i<props.exercise_counts.length;i++){
         sum+=props.exercise_counts[i];
     }
     return  (<p>Number of exercises {sum}</p>)
@@ -22,17 +31,9 @@ const App = () => {
 
   return (
     <div>
-      <h1>{course}</h1>
-      <p>
-        {part1} {exercises1}
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Header course={course} />
+      <Content part_titles={[part1,part2,part3]} exercise_counts={[exercises1,exercises2,exercises3]} />
+      <Total exercise_counts={[exercises1,exercises2,exercises3]} />
     </div>
   )
 }
