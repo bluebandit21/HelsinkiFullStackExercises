@@ -1,13 +1,22 @@
 import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 const Button = ({text,handler}) => <button onClick={handler}>{text}</button>
-const Value = ({text,value}) => <>{text} {value}</>
-const Display = ({values}) => {
+const Display = ({good,neutral,bad}) => {
   return (
     <div align="center">
-      <Value text={values[0]} />
-      <Value text={values[1]} />
-      <Value text={values[2]} />
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+    </div>
+  )
+}
+const Statistics = ({good,neutral,bad}) => {
+  let total=good+bad+neutral
+  return (
+    <div align="center">
+      <p>Total number of reviews: {total}</p>
+      <p>Average review score: {total!==0 ? ((good-bad)/total).toString().substr(0,4) : "N/A"}</p>
+      <p>{good ? (good / total * 100).toString().substr(0,4) : 0}% positive feedback</p>
     </div>
   )
 }
@@ -24,14 +33,14 @@ const App = () => {
   return ( 
     <>
       <h1 align="center">Customer Feedback:</h1>
-      <Display values={[["Good: ",good],["Neutral: ",neutral],["Bad: ",bad]]} />
+      <Display good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
       <br></br>
       <div align="center">
         <Button text="Good" handler={incrementGood()}/> 
         <Button text="Neutral" handler={incrementNeutral()}/> 
         <Button text="Bad" handler={incrementBad()}/> 
       </div>
-
     </>
   )
 }
