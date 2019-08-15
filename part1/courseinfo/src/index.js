@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { sign } from 'crypto';
 
 const Header = (props) => (<h1>{props.course}</h1>)
 const Part = (props) => (<p>{props.part.name} {props.part.exercises}</p>)
