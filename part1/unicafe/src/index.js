@@ -10,13 +10,14 @@ const Display = ({good,neutral,bad}) => {
     </div>
   )
 }
+const Statistic = ({text,value}) => <p>{text} {value}</p> //Why must this be a thing?
 const Statistics = ({good,neutral,bad}) => {
   let total=good+bad+neutral
   return (
     <div align="center">
-      <p>Total number of reviews: {total}</p>
-      <p>Average review score: {total!==0 ? ((good-bad)/total).toString().substr(0,4) : "N/A"}</p>
-      <p>{good ? (good / total * 100).toString().substr(0,4) : 0}% positive feedback</p>
+      <Statistic text="Total number of reviews: " value={total} />
+      <Statistic text="Average review score: " value={total!==0 ? ((good-bad)/total).toString().substr(0,4) : "N/A"} />
+      <Statistic text="Positive feedback: " value={(good ? (good / total * 100).toString().substr(0,4) : "")+"%"} />
     </div>
   )
 }
