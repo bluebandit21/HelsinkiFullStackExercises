@@ -21,11 +21,25 @@ const App = (props) => {
       <p>{anecdote} -- {votes} votes</p>
     )
   }
+  const AnecdoteOfTheDay = ({anecdotes,votes}) => {
+    let mostPopular=0
+    let mostVotes=0
+    for(let i=0;i<anecdotes.length;i++){
+      if(votes[i] > mostVotes){
+        mostPopular = i
+        mostVotes = votes[i]
+      }
+    }
+    return <Anecdote anecdote={anecdotes[mostPopular]} votes={votes[mostPopular]} />
+  }
   return (
     <div>
+      <h1>Anecdote</h1>
       <Button text="Give me an anecdote!" handler={randomizeAnecdote()} />
       <Button text="I like this one!" handler={upvoteAnecdote(selected)} />
       <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
+      <h1>Anecdote of the day</h1>
+      <AnecdoteOfTheDay anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
