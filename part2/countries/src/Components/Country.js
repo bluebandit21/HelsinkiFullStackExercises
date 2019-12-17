@@ -1,5 +1,7 @@
 import React from 'react'
 
+import DisplayWeather from './DisplayWeather'
+
 const Country = ({country}) => {
     return (
         <div>
@@ -15,6 +17,7 @@ const Country = ({country}) => {
             }
             </ul>
             <img src={country.flag} style={{width: '30%', height: 'auto'}} alt=''></img>
+            <DisplayWeather country={country} />
         </div>
     )
 }

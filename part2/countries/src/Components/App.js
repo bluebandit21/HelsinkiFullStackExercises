@@ -1,4 +1,4 @@
-import React, { useState,componentDidUpdate } from 'react'
+import React, { useState } from 'react'
 
 import axios from 'axios'
 import DisplayCountries from './DisplayCountries.js'
