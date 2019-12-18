@@ -6,7 +6,8 @@ import './Form'
 import DisplayPersons from './DisplayPersons'
 import DisplayFilter from './DisplayFilter'
 import Form from './Form'
-import axios from 'axios'
+
+import personService from '../Services/persons'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -15,14 +16,47 @@ const App = () => {
   const [ searchString, setSearchString ] = useState('')
   const addEntry = (event) => {
     event.preventDefault()
+    if(newName === ''){
+      alert("You must enter a name")
+      return
+    } 
     if(persons.map(a => a.name).includes(newName)){
-      alert(`The name ${newName} is already present in the phonebook`)
+      if (window.confirm(`The name ${newName} is already present in the phonebook.\nDo you want to update the number?`)){
+        personService
+          .updatePerson(persons.filter(a => a.name === newName)[0],newNumber)
+          .then(retval => {
+            if(retval !== 0){
+              alert("An error occured while contacting the server.\nPlease try again.")
+            }
+          })
+        setPersons(persons.map(person => person.name !== newName ? person : {...person,number:newNumber}))
+        setNewName('');
+        setNewNumber('');
+      }
       return
     }
     let newPerson = {name: newName, number: newNumber};
+    personService
+      .addPerson(newPerson)
+      .then(retval => {
+        if(retval !== 0){
+          alert("An error occured while contacting the server.\nPlease try again.")
+        }
+      })
     setPersons(persons.concat(newPerson))
     setNewName('');
     setNewNumber('');
+  }
+  const deleteEntry = (person) => () => {
+    if(window.confirm(`Really delete ${person.name}?`) !== true) return
+    personService
+      .deletePerson(person)
+      .then(retval => {
+        if(retval !== 0){
+          alert("An error occured while attempting to delete the entry.\nThe entry might have already been deleted.")
+        }
+      })
+      setPersons(persons.filter(currentPerson => currentPerson.name !== person.name))
   }
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -35,13 +69,11 @@ const App = () => {
   }
   
   useEffect(() => {
-    console.log('@Effect')
-    axios
-    .request('http://localhost:3001/persons')
-    .then(request => {
-      console.log('@Response',request)
-      setPersons(request.data)
-    })
+    personService
+      .getAll()
+        .then(data => {
+          setPersons(data)
+        })
   },[])
 
   return (
@@ -58,7 +90,7 @@ const App = () => {
       <input value={searchString} onChange={handleSearchChange}/>
       <DisplayFilter persons={persons} searchString={searchString} />
       <h3>Numbers</h3>
-      <DisplayPersons persons={persons} />
+      <DisplayPersons persons={persons} deletePerson={deleteEntry}/>
     </div>
   )
 }
