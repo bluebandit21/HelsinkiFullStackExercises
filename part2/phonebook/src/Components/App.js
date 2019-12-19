@@ -88,7 +88,7 @@ const App = () => {
       } />
       <h3>Search</h3>
       <input value={searchString} onChange={handleSearchChange}/>
-      <DisplayFilter persons={persons} searchString={searchString} />
+      <DisplayFilter persons={persons} searchString={searchString} deletePerson={deleteEntry}/>
       <h3>Numbers</h3>
       <DisplayPersons persons={persons} deletePerson={deleteEntry}/>
     </div>
