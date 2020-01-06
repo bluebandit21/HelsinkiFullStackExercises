@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import noteService from './services/notes'
 import Note from './components/Note'
 
+import Notification from './components/Notification'
 const App = (props) => {
   const [notes, setNotes] = useState([]) 
   const [newNote, setNewNote] = useState('') 
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     console.log('@effect')
@@ -17,6 +19,12 @@ const App = (props) => {
       })
       .catch(error => {
         console.log('Error in get: ',error)
+        setErrorMessage(
+          `Error encoutered while retrieved notes from server.\nPlease reload the page and try again.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        },3000)
       })
       
     },[])
@@ -35,6 +43,12 @@ const App = (props) => {
       })
       .catch(error => {
         console.log('Error in update: ',error)
+        setErrorMessage(
+          `Error encoutered while retrieved updating note in server.\nPlease reload the page and try again.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        },3000)
       })
   }
   const rows = () => notesToShow.map(note =>
@@ -66,6 +80,12 @@ const App = (props) => {
       })
       .catch(error => {
         console.log('Error in create: ',error)
+        setErrorMessage(
+          `Error encoutered while retrieved adding note to server.\nPlease reload the page and try again.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        },3000)
       })
 
     setNotes(notes.concat(noteObject))
@@ -75,6 +95,7 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}

@@ -6,6 +6,7 @@ import './Form'
 import DisplayPersons from './DisplayPersons'
 import DisplayFilter from './DisplayFilter'
 import Form from './Form'
+import ErrorDisplay from './ErrorDisplay'
 
 import personService from '../Services/persons'
 
@@ -14,6 +15,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchString, setSearchString ] = useState('')
+  const [ errorMessage, setErrorMessage ] = useState(null)
   const addEntry = (event) => {
     event.preventDefault()
     if(newName === ''){
@@ -26,7 +28,15 @@ const App = () => {
           .updatePerson(persons.filter(a => a.name === newName)[0],newNumber)
           .then(retval => {
             if(retval !== 0){
-              alert("An error occured while contacting the server.\nPlease try again.")
+              setErrorMessage("An error occured while contacting the server.\nPlease try again.")
+              setTimeout(() => {
+                setErrorMessage(null)
+              },3000)
+            }else{
+              setErrorMessage("Successfully updated number.") //Yes, it's not actually an error message. Sue me.
+              setTimeout(() => {
+                setErrorMessage(null)
+              },2000)
             }
           })
         setPersons(persons.map(person => person.name !== newName ? person : {...person,number:newNumber}))
@@ -40,7 +50,15 @@ const App = () => {
       .addPerson(newPerson)
       .then(retval => {
         if(retval !== 0){
-          alert("An error occured while contacting the server.\nPlease try again.")
+          setErrorMessage("An error occured while contacting the server.\nPlease try again.")
+              setTimeout(() => {
+                setErrorMessage(null)
+              },3000)
+        }else{
+          setErrorMessage("Successfully added entry.") //Yes, it's not actually an error message. Sue me.
+          setTimeout(() => {
+            setErrorMessage(null)
+          },2000)
         }
       })
     setPersons(persons.concat(newPerson))
@@ -53,7 +71,10 @@ const App = () => {
       .deletePerson(person)
       .then(retval => {
         if(retval !== 0){
-          alert("An error occured while attempting to delete the entry.\nThe entry might have already been deleted.")
+          setErrorMessage("An error occured while attempting to delete the entry.\nThe entry might have already been deleted.")
+          setTimeout(() => {
+            setErrorMessage(null)
+          },2000)
         }
       })
       setPersons(persons.filter(currentPerson => currentPerson.name !== person.name))
@@ -78,6 +99,7 @@ const App = () => {
 
   return (
     <div>
+      <ErrorDisplay errorMessage={errorMessage} />
       <h2>Phonebook</h2>
       <h3>Add Entry</h3>
       <Form onSubmit={addEntry} fields={
