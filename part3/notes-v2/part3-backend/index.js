@@ -1,7 +1,14 @@
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser')
+//const cors = require('cors')
+const morgan = require('morgan')
 
+const app = express()
+
+app.use(express.static('build'))
+app.use(bodyParser.json())
+app.use(morgan('dev'))
+//app.use(cors())
 let notes = [
     {
       id: 1,
@@ -22,14 +29,14 @@ let notes = [
       important: true
     }
 ]
-app.use(bodyParser.json())
+ 
 
 app.get('/', (request,response) => {
   response.send('<p>Backend Server<p>')
   console.log(`GET ${request.path} 200`)
 })
 
-app.get('/notes', (request,response) => {
+app.get('/api/notes', (request,response) => {
   response.json(notes)
   console.log(`GET ${request.path} 200`)
 })
@@ -41,7 +48,7 @@ const generateId = () => {
   return maxId + 1
 }
 
-app.post('/notes', (request, response) => {
+app.post('/api/notes', (request, response) => {
   const body = request.body
 
   if (!body.content) {
@@ -62,7 +69,7 @@ app.post('/notes', (request, response) => {
   response.json(note)
 })
 
-app.get('/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
   if(note){
@@ -74,7 +81,7 @@ app.get('/notes/:id', (request, response) => {
   }
 })
 
-app.delete('notes/:id', (request,response) => {
+app.delete('/api/notes/:id', (request,response) => {
   const id = Number(request.params.id)
   notes = notes.filter(note => note.id !== id)
 
@@ -83,11 +90,10 @@ app.delete('notes/:id', (request,response) => {
 
 app.use((request,response) => {
   response.status(404).end()
-  console.log(`GET ${request.path} 404`)
   //Defaults to 404
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}\n`)
 })
