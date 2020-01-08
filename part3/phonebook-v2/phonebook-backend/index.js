@@ -1,11 +1,9 @@
 const express=require('express')
 const bodyParser=require('body-parser')
 const morgan=require('morgan')
-const cors=require('cors')
 
 app=express()
-app.use(cors())
-app.use(bodyParser.json())
+app.use(express.static('build'))
 morgan.token('post-body', (request,response) => {
     let stringified = JSON.stringify(request.body)
     return stringified !== "{}" ? stringified : ""
@@ -16,26 +14,46 @@ console.log('Hello World!');
 
 let persons = [
     {
-        name: "Arto Hellas",
-        number: "040-123456",
-        id: 1
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
     },
     {
-        name: "Ada Lovelace",
-        number: "39-44-5323523",
-        id: 2
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
     },
     {
-        name: "Dan Abramov",
-        number: "12-43-234345",
-        id: 3
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
     },
     {
-        name: "Mary Poppendieck",
-        number: "39-23-6423122",
-        id: 4
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    },
+    {
+      "name": "Sarafina So-so",
+      "number": "5050",
+      "id": "Sarafina So-so"
+    },
+    {
+      "name": "Superb Blooper",
+      "number": "222",
+      "id": "Superb Blooper"
+    },
+    {
+      "name": "Won Didja",
+      "number": "312-31235-2222",
+      "id": "Won Didja"
+    },
+    {
+      "name": "Wase Vase",
+      "number": "74537453",
+      "id": "Wase Vase"
     }
-]
+  ]
 
 app.get('/info', (request,response) => {
     response.send(`<p>Phonebook has info for ${persons.length} people.</p><p>${new Date()}</p>`)
@@ -100,7 +118,7 @@ app.use((request,response) => {
         error: 'Page not found.'
     })
 })
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}\n`)
 })
