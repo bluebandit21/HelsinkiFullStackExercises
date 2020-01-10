@@ -1,8 +1,15 @@
+const configParser=require('configparser')
+const config=new configParser()
+config.read('.password_config')
+const mongoUsername=config.get('MongoDB',username)
+const mongoPassword=config.get('MongoDB',password)
+
 const express=require('express')
 const bodyParser=require('body-parser')
 const morgan=require('morgan')
 
 app=express()
+app.use(bodyParser())
 app.use(express.static('build'))
 morgan.token('post-body', (request,response) => {
     let stringified = JSON.stringify(request.body)
@@ -101,9 +108,9 @@ app.get('/api/persons/:id', (request, response) => {
     }
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:name', (request, response) => {
     let len = persons.length
-    persons = persons.filter(person => person.id!==Number(request.params.id))
+    persons = persons.filter(person => person.name!==request.params.name)
     if(len !== persons.length){
         response.status(204).end()
     }else{
