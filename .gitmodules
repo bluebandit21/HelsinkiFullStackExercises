@@ -2,5 +2,5 @@
     path = "part3/notes-v2/part3-backend"
     url = "git://git.heroku.com/calm-hamlet-52454.git"
 [submodule "part3/phonebook-v2/phonebook-backend"]
-    path = "part3/phonebook-v2/phonebook-backend"]
+    path = "part3/phonebook-v2/phonebook-backend"
     url = "git://git.heroku.com/hidden-badlands-12345.git"
